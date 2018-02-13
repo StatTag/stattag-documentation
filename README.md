@@ -9,3 +9,6 @@ This is the repository for detailed documentation about the StatTag software.  I
     3. [Release Checklist](Releases.md)
 2. Architecture and Design
     1. [File Monitoring](FileMonitoring.md)
+    1. [Document Metadata](DocumentMetadata.md)
+3. System Documentation
+    1. [Platform Differences](PlatformDifferences.md)
