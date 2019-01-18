@@ -46,7 +46,27 @@ Original setup instructions were:
 ## macOS
 Update the version for the application in Xcode following our [versioning conventions](https://github.com/StatTag/stattag-documentation/blob/master/Versioning.md).  Perform `Product -> Clean`, and `Product -> Build` to ensure the build is refreshed.
 
-Generate the application via `Product -> Archive`.  When the Archive window appears (assuming it completes without error), ensure your build is selected in the list and click `Export...`.  Select `Export as a macOS App` and define a location for the application to be exported to.
+Generate the application via `Product -> Archive`.  When the Archive window appears (assuming it completes without error), ensure your build is selected in the list and click `Export...`.  Select `Export a Developer ID-signed Application`, select the `Northwestern University` Development Team, click the `Export` button on the Summarys creen, and define a location for the application to be exported to.
+
+Find a pre-existing or template DMG which contains the StatTag icon.  If there is an existing version of StatTag.app within the DMG, move it to the Trash.  If you are also updating the User's Guide, move that to the Trash as well.  **Empty the Trash**.
+
+If the DMG runs out of space, the following command will let you increase its capacity.  Be sure to change 17M to whatever maximum size you need:
+	
+	hdiutil resize -size 17M StatTag-TEMPLATE.dmg
+
+Copy the new StatTag.app into the DMG, and position it appropriately in the view.  Do the same with the User's Guide if it is also being updated.  Make sure that the view is exactly how you want it to appear to users (e.g., hiding the Favorites bar, appropriately sized).
+
+Run Disk Utility.  You should see your StatTag DMG mounted.  Select it in the list, and from the menu select File -> New Image -> Image from "StatTag".  Ensure the format is "read-only".
+
+Eject the StatTag image, and test that the newly created DMG mounts and automatically opens the view for the user.
+
+Rename the DMG based on the version, following the naming conventions.  You are now ready to upload this to the download servers.
+
+### Alternate Signing Instructions ###
+
+If for any reason you are unable to export as a Developer ID-signed application, but you do have a valid developer ID, the following alternate steps should work.  This should not be your main method, but instructions are included here just in case.
+
+As before, begin an `Export...`.  Select `Export as a macOS App` and define a location for the application to be exported to.
 
 Sign the generated application with our developer key.  Note that this assumes you're already in the directory where you have exported StatTag.app.
 ```
@@ -57,13 +77,3 @@ Optionally, you can run the following to confirm that the app has been signed:
 ```
 codesign -dv --verbose=4 StatTag.app
 ```
-
-Find a pre-existing or template DMG which contains the StatTag icon.  If there is an existing version of StatTag.app within the DMG, move it to the Trash.  If you are also updating the User's Guide, move that to the Trash as well.  **Empty the Trash**.
-
-Copy the new StatTag.app into the DMG, and position it appropriately in the view.  Do the same with the User's Guide if it is also being updated.  Make sure that the view is exactly how you want it to appear to users (e.g., hiding the Favorites bar, appropriately sized).
-
-Run Disk Utility.  You should see your StatTag DMG mounted.  Select it in the list, and from the menu select File -> New Image -> Image from "StatTag".  Ensure the format is "read-only".
-
-Eject the StatTag image, and test that the newly created DMG mounts and automatically opens the view for the user.
-
-Rename the DMG based on the version, following the naming conventions.  You are now ready to upload this to the download servers.
