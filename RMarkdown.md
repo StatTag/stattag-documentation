@@ -5,10 +5,13 @@
 ## Philosophy of R Markdown Integration
 There are many scenarios we can envision with users who wish to integrate R Markdown with a Word document using StatTag.  Primarily though, we are assuming that one or more R Markdown documents were created for intermediate reporting to the research study team, and the user wishes to repurpose the statistical code for a manuscript.
 
-We need to consider a few possible user scenarios, which will affect how StatTag works and how we recommend users make use of the R Markdown integration:
+We are aware of the following user scenarios, and indicate which we support within StatTag.
 
-1. **Branched** - the user sees the code used in the manuscript as a branch of the R Markdown code, and either needs them to deviate or is okay if they deviate.
-2. **Integrated** - the user sees the RMarkdown file as a source file, and has enough analysis work done in it that they don't want to duplicate the work.  They are planning to integrate it with their manuscript, and any changes to their R Markdown code must be reflected within the manuscript as well.
+| Scenario | Supported | Description |
+| ---------| --------- | ----------- |
+| Integrated| :white_check_mark: Yes | The user sees the RMarkdown file as a source file, and has enough analysis work done in it that they don't want to duplicate the work.  They are planning to integrate it with their manuscript, and any changes to their R Markdown code must be reflected within the manuscript as well. |
+| Branched | :x: No | the user sees the code used in the manuscript as a branch of the R Markdown code, and either needs them to deviate or is okay if they deviate. |
+
 
 
 ## Chunks, Inline Code and Tags
@@ -36,8 +39,14 @@ We need to ensure StatTag has a way to unqiuely identify pieces of code, so that
 ## Tag Properties
 StatTag allows users to specify formatting options for values and tables.  <mark>For R Markdown integration, we have determined that users should perform all formatting (e.g., specify number of digits, suppress table columns) within the R Markdown code.</mark>
 
+## Figures
+What to do with fig.opts setting paths, etc. for the figures?
+
+## Patterns
+For reference, the list of R Markdown patterns are at: [https://github.com/yihui/knitr/blob/master/R/pattern.R](https://github.com/yihui/knitr/blob/master/R/pattern.R)
+
 ## Markdown Options
-R Markdown (via knitr) allows the user to set some options for how things are rendered.  For example, the user can specify the height and width of a figure.  A challenge for StatTag then is interpreting those parameters and ensuring they are appropriately applied.  This includes considering both global options, as well as individual options on code chunks.
+R Markdown (via knitr) allows the user to [set some options](https://yihui.name/knitr/options/#chunk_options) for how things are rendered.  For example, the user can specify the height and width of a figure.  A challenge for StatTag then is interpreting those parameters and ensuring they are appropriately applied.  This includes considering both global options, as well as individual options on code chunks.
 
 ### Displaying Code
 <mark>StatTag will never insert the code chunk in a document, even if the R Markdown is explicitly configured to do this (RMD `echo` option)</mark>
