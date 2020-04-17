@@ -15,5 +15,7 @@ This is the repository for detailed documentation about the StatTag software.  I
     4. [R Markdown](RMarkdown.md)
 3. System Documentation
     1. [Platform Differences](PlatformDifferences.md)
-4. Other
+4. Test Scenarios
+	1. [Merging Word Documents](Test-MergeDocuments.md)
+5. Other
     1. [Troubleshooting](Troubleshooting.md)
