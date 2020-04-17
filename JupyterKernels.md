@@ -37,10 +37,18 @@ Each instance will manage a single Jupyter kernel instance.  It requires a Kerne
 
 When the KernelManager starts a kernel, it will also generate a signature key (HMAC SHA-256).  This must be done at the time we are creating and launching kernels, because the shared key must exist in the kernel's connection file.  When a new KernelClient is requested, it will have the key embedded within it.
 
+##### Cleanup
+The KernelManager should be disposed of when you are done with the kernel instance.  This process will first request that the kernel shutdown, using the `control` channel.  If the kernel does not respond to this, eventually the process will be forcibly killed.  The connection file, which contains the kernel's connection details for this instance, will be deleted.  After that, the channels will be closed down and cleaned up.
+
+> NOTE: Currently the KernelManager expects that you will properly close all KernelClient instances before the kernel shuts down.  If you do not, the KernelClient instances left will report errors.
+
 #### KernelClient
 From your program, communication with the kernel is done via a KernelClient.  You can create an instance of the client from the KernelManager's `CreateClient` method.  Once you have the instance of the client, you will need to call `StartChannels` to open up the ZMQ sockets that Jupyter uses for communication (don't forget to to call `StopChannels` when you're all done).
 
 You can run code by calling `Execute`.  This will internally track the blocks of code as you send them, and their respective status within the kernel.  You can check for any outstanding execution requests with `HasPendingExecute` or with `GetPendingExecuteCount`.  You can also block permanently or temporarily (specifying a timeout) to wait for these via `WaitForPendingExecute`.
+
+##### Cleanup
+[[**THIS IS TODO**]]The KernelClient is disposable, and should be wrapped in a `using() {}` block.  When it is disposed, it will close and clean up all of its associated channels to the underlying kernel.  Note that the kernel itself will still be left running when a client disconnects.  See [KernelManager](#kernelmanager) for how cleanup of the kernel is handled.
 
 ###### Sockets
 The following sockets are created and used by the client to communicate with the kernel.  Note that ZMQ uses paired types of sockets for communications.  If you look at information about Jupyter kernels, you will see different socket types listed.  The order in the following table is the order in which the sockets are created.
