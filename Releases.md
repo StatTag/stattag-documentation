@@ -48,11 +48,53 @@ Update the version for the application in Xcode following our [versioning conven
 
 Generate the application via `Product -> Archive`.  When the Archive window appears (assuming it completes without error), ensure your build is selected in the list and click `Export...`.  Select `Export a Developer ID-signed Application`, select the `Northwestern University` Development Team, click the `Export` button on the Summarys creen, and define a location for the application to be exported to.
 
+##### Checking Framework References
+
+From the command line, navigate to the directory where the StatTag.app exists.  We need to check that our weak references aren't bound to a specific version of R.  You can check this by running:
+
+`otool -L StatTag.app/Contents/Frameworks/RCocoa.framework/RCocoa | grep R.framework`
+
+Results like this mean we have a problem, since a specific R version (3.6) is referenced in the R.framework path.
+
+```
+/Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libR.dylib (compatibility version 3.6.0, current version 3.6.3)
+```
+
+Results like this are okay, since it's already pointing to the `Current` path for R.framework:
+
+```
+/Library/Frameworks/R.framework/Versions/Current/Resources/lib/libR.dylib (compatibility version 3.6.0, current version 3.6.3)
+```
+
+If you do encounter a problem with RCocoa pointing to a specific version of R.framework, the following commands can fix that.  This also re-signs the application, which is important.  The `install_name_tool` invalidates our previous signature otherwise.
+
+> **NOTE**: You will need to change the commands for the specific version of the R.framework that you found from `otool`.
+
+```
+install_name_tool -change /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libR.dylib /Library/Frameworks/R.framework/Versions/Current/Resources/lib/libR.dylib StatTag.app/Contents/Frameworks/RCocoa.framework/RCocoa
+
+install_name_tool -change /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libR.dylib /Library/Frameworks/R.framework/Versions/Current/Resources/lib/libR.dylib StatTag.app/Contents/Frameworks/RCocoa.framework/Versions/A/RCocoa
+
+install_name_tool -change /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libR.dylib /Library/Frameworks/R.framework/Versions/Current/Resources/lib/libR.dylib StatTag.app/Contents/Frameworks/RCocoa.framework/Versions/Current/RCocoa
+
+install_name_tool -change /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libR.dylib /Library/Frameworks/R.framework/Versions/Current/Resources/lib/libR.dylib StatTag.app/Contents/Frameworks/StatTagFramework.framework/StatTagFramework
+
+install_name_tool -change /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libR.dylib /Library/Frameworks/R.framework/Versions/Current/Resources/lib/libR.dylib StatTag.app/Contents/Frameworks/StatTagFramework.framework/Versions/A/StatTagFramework
+
+install_name_tool -change /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libR.dylib /Library/Frameworks/R.framework/Versions/Current/Resources/lib/libR.dylib StatTag.app/Contents/Frameworks/StatTagFramework.framework/Versions/Current/StatTagFramework
+
+
+codesign --deep --force --verify --verbose --sign "Developer ID Application: Northwestern University" StatTag.app
+
+codesign -dv --verbose=4 StatTag.app
+```
+
+##### Packaging
 Find a pre-existing or template DMG which contains the StatTag icon.  If there is an existing version of StatTag.app within the DMG, move it to the Trash.  If you are also updating the User's Guide, move that to the Trash as well.  **Empty the Trash**.
 
-If the DMG runs out of space, the following command will let you increase its capacity.  Be sure to change 17M to whatever maximum size you need:
+> If the DMG runs out of space, the following command will let you increase its capacity.  Be sure to change 17M to whatever maximum size you need:
 	
-	hdiutil resize -size 17M StatTag-TEMPLATE.dmg
+>	`hdiutil resize -size 17M StatTag-TEMPLATE.dmg`
 
 Copy the new StatTag.app into the DMG, and position it appropriately in the view.  Do the same with the User's Guide if it is also being updated.  Make sure that the view is exactly how you want it to appear to users (e.g., hiding the Favorites bar, appropriately sized).
 
