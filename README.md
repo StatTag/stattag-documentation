@@ -12,6 +12,7 @@ This is the repository for detailed documentation about the StatTag software.  I
     2. [Document Metadata](DocumentMetadata.md)
     3. [Fields](Fields.md)
     3. [Windows Forms Communication](WindowsForms.md)
+    4. [Interaction with Statistical Programs](Windows-StatisticalPrograms.md)
     4. [R Markdown](RMarkdown.md)
 3. System Documentation
     1. [Platform Differences](PlatformDifferences.md)
