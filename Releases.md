@@ -6,19 +6,20 @@ The following steps should be taken to release a new version of the software for
 1. Increment versions in the following projects:
 	1. StatTag
 	2. Core
-	3. Stata
-	4. SAS
-	5. R
-2. Reload the OfficeAddInSetup-x86 project
-	1. Under Organize Your Setup > General Information
-		1. Update the Product Version
-		2. Regenerate the Product Code
-		3. Change the upgrade path to include the previous version
+	3. Jupyter
+	4. R
+	5. SAS
+	6. Stata
+2. Update Setup-x86
+	1. Click the 'Setup-x86' project in the Solution Explorer to view its properties
+		1. Update the Version
+			1. Note that Setup projects only allow X.Y.Z versions, and StatTag uses X.Y.Z.A. To accommodate this, we use the "Z" portion of the version to include "Z.A".  For example, version 6.0.3.2 would have an installer version of 6.0.302.  Version 6.1.10.55 would have an installer version 6.1.1055, etc.
+		2. Visual Studio should prompt you to regenerate the Product Code. Confirm that you want to regenerate it.  Otherwise, go to the Product Code in the Properties and regenerate it.
 	2. Change the build configuration to "Release"
 	3. Change the platform to "x86"
 	4. Clean and then rebuild the entire solution
 	5. Copy the setup file to the shared releases folder
-3. Unload the OfficeAddInSetup-x86 project and reload the OfficeAddInSetup-x64 project
+3. Click the 'Setup-x64' project in the Solution Explorer to view its properties
 	1. Repeat steps 2.1 and 2.2
 	2. Change the platform to "Any CPU"
 	3. Perform steps 2.4 and 2.5
@@ -30,18 +31,10 @@ The x64 and x86 Upgrade Code (which should never be changed) is: {AEC2B59D-045C-
 We have purposely kept the same upgrade code for all platforms.
 
 ### Additional information
-Setting up InstallShield to allow upgrades was found at: [http://stackoverflow.com/a/13874942/5670646](http://stackoverflow.com/a/13874942/5670646)
+Starting with release v6.0.3 we moved away from the InstallShield Limited Edition installer and moved to Microsoft's Setup Project installer.  The Setup Project closely mimics what we had available in InstallShieled LE, with one exception that it generates an MSI instead of an EXE, and some minor installer UI differences.
 
-Original setup instructions were:
+The Setup project should be configured to replace older InstallShield installs, so there shouldn't be continuity issues moving from one platform to the next.  This is because of the Upgrade Code that we have fixed.
 
-
-> "In your InstallShield setup project, you should do the following:
-
-> * select branch: Organize your setup -> Upgrade Paths
-* add new upgrade path and than press the cancel button
-* the default properties of the new upgrade path should not be changed if you do not plan to change the Product version from the following branch: Organize your setup -> General Information. If you plan to change the Product version, than you should play with the following upgrade path properties: Min Version/_Include Min Version_, Max Version/_Include Max Version_.
-* every time you need to create a new setup, change the Product code from the following branch: Organize your setup -> General Information.
-* please be aware that the Upgrade Code should NEVER be changed."
 
 ## macOS
 Update the version for the application in Xcode following our [versioning conventions](https://github.com/StatTag/stattag-documentation/blob/master/Versioning.md).  Perform `Product -> Clean`, and `Product -> Build` to ensure the build is refreshed.
