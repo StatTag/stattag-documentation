@@ -94,7 +94,7 @@ Find a pre-existing or template DMG which contains the StatTag icon.  If there i
 
 > If the DMG runs out of space, the following command will let you increase its capacity.  Be sure to change 17M to whatever maximum size you need:
 	
->	`hdiutil resize -size 17M StatTag-TEMPLATE.dmg`
+>	`hdiutil resize -size 20.5M StatTag-TEMPLATE.dmg`
 
 Copy the new StatTag.app into the DMG, and position it appropriately in the view.  Do the same with the User's Guide if it is also being updated.  Make sure that the view is exactly how you want it to appear to users (e.g., hiding the Favorites bar, appropriately sized).
 
