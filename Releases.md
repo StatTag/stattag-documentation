@@ -37,9 +37,11 @@ The Setup project should be configured to replace older InstallShield installs, 
 
 
 ## macOS
+First, when building for macOS we need to have selected and active the minimum version of R that we are supporting - 3.
+
 Update the version for the application in Xcode following our [versioning conventions](https://github.com/StatTag/stattag-documentation/blob/master/Versioning.md).  Perform `Product -> Clean`, and `Product -> Build` to ensure the build is refreshed.
 
-Generate the application via `Product -> Archive`.  When the Archive window appears (assuming it completes without error), ensure your build is selected in the list and click `Export...`.  Select `Export a Developer ID-signed Application`, select the `Northwestern University` Development Team, click the `Export` button on the Summarys creen, and define a location for the application to be exported to.
+Generate the application via `Product -> Archive`.  When the Archive window appears (assuming it completes without error), ensure your build is selected in the list and click `Distribute App`.  Select `Developer ID`, select `Upload` so the app will be sent through Apple's notary service. Select `Automatically manage signing`, and you can accep the default list of entitlements that appear and click `Upload`. After some time you will get a notification (through the app and via e-mail) that the app has gone through the notarization process.  From the Xcode window, you should see an `Export...` button that will let you save the app to a folder on your machine.
 
 ##### Checking Framework References
 
