@@ -4,9 +4,10 @@ This is the repository for detailed documentation about the StatTag software.  I
 
 ## Table of Contents
 1. Development Practices
-    1. git
-    2. [Versioning](Versioning.md)
-    3. [Release Checklist](Releases.md)
+    1. [Issues/Questions](Issues.md)
+    2. git
+    3. [Versioning](Versioning.md)
+    4. [Release Checklist](Releases.md)
 2. Architecture and Design
     1. [File Monitoring](FileMonitoring.md)
     2. [Document Metadata](DocumentMetadata.md)
